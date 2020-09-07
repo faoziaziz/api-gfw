@@ -1,10 +1,10 @@
 # AM_* rules are common to all programs
 AM_CPPFLAGS = -g -O2 -Wall
-#AM_LDFLAGS = -lm
+AM_LDFLAGS = -lm 
 
-bin_PROGRAMS = example
+bin_PROGRAMS = api-gfw-client
 
-example_SOURCES = example.c
+api_gfw_client_SOURCES = main.c
 
 # Program specific rules
 #example_CPPFLAGS = 
