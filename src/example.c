@@ -1,3 +1,8 @@
+ /*
+  author : Aziz Amerul Faozi
+  description : this code just test for autoconfigure
+*/
+
 #include <stdio.h>
 #include <stdlib.h> // atoi
 #include <getopt.h>	// getopt_long
