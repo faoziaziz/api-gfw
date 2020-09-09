@@ -22,3 +22,12 @@ Then just compile the project:
 ```
 make
 ```
+## Dependency
+Some dependency should be installed like :
+1. curl.
+2. pthread.
+
+```sh
+sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install pthread
+```
