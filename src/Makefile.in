@@ -86,7 +86,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = example$(EXEEXT)
+bin_PROGRAMS = api-gfw-client$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -99,9 +99,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_example_OBJECTS = example.$(OBJEXT)
-example_OBJECTS = $(am_example_OBJECTS)
-example_LDADD = $(LDADD)
+am_api_gfw_client_OBJECTS = main.$(OBJEXT)
+api_gfw_client_OBJECTS = $(am_api_gfw_client_OBJECTS)
+api_gfw_client_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -117,7 +117,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/example.Po
+am__depfiles_remade = ./$(DEPDIR)/main.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -131,8 +131,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(example_SOURCES)
-DIST_SOURCES = $(example_SOURCES)
+SOURCES = $(api_gfw_client_SOURCES)
+DIST_SOURCES = $(api_gfw_client_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -249,7 +249,8 @@ top_srcdir = @top_srcdir@
 
 # AM_* rules are common to all programs
 AM_CPPFLAGS = -g -O2 -Wall
-example_SOURCES = example.c
+AM_LDFLAGS = -lm -lcurl
+api_gfw_client_SOURCES = main.c 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -342,9 +343,9 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-example$(EXEEXT): $(example_OBJECTS) $(example_DEPENDENCIES) $(EXTRA_example_DEPENDENCIES) 
-	@rm -f example$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(example_OBJECTS) $(example_LDADD) $(LIBS)
+api-gfw-client$(EXEEXT): $(api_gfw_client_OBJECTS) $(api_gfw_client_DEPENDENCIES) $(EXTRA_api_gfw_client_DEPENDENCIES) 
+	@rm -f api-gfw-client$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(api_gfw_client_OBJECTS) $(api_gfw_client_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -352,7 +353,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/example.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -501,7 +502,7 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/example.Po
+		-rm -f ./$(DEPDIR)/main.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-tags
@@ -547,7 +548,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/example.Po
+		-rm -f ./$(DEPDIR)/main.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -583,7 +584,7 @@ uninstall-am: uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 
-
+#api_gfw_client_HEADERS = client.h
 # Program specific rules
 #example_CPPFLAGS = 
 #example_LDADD = 

@@ -1,4 +1,4 @@
-AC_INIT([project-name], [0.0.1])
+AC_INIT([api-gfw-client], [0.0.2])
 
 # 'foreign' specifies not to create the default GNU-style project files,
 # such as touch, NEWS, README, AUTHORS ...
@@ -16,6 +16,10 @@ AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
     Makefile
     src/Makefile
+])
+
+AC_SEARCH_LIBS([curl_easy_setopt], [curl], [], [
+  AC_MSG_ERROR([unable to find mantap()])
 ])
 
 AC_OUTPUT
