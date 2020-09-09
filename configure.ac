@@ -26,4 +26,8 @@ AC_SEARCH_LIBS([pthread_join], [pthread], [], [
   AC_MSG_ERROR([pthread belum diinstall])
 ])
 
+AC_SEARCH_LIBS([sqlite3_libversion], [sqlite3], [], [
+  AC_MSG_ERROR([sqlite3 belum diinstall])
+])
+
 AC_OUTPUT

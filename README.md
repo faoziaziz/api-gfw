@@ -1,10 +1,16 @@
+# API-GFW-Client
+
+
 ## About
 
-A ready to use C template project set up with Autotools build system.
+This is just client api with thread and curl
 
 ## Requirements
 
-GNU build system (autoconf, automake, libtool)
+1. GNU build system (autoconf, automake, libtool)
+2. Curl
+3. pthread
+4. sqlite3
 
 ## Pipeline
 
@@ -26,8 +32,11 @@ make
 Some dependency should be installed like :
 1. curl.
 2. pthread.
+berikut ini adalah cara installasi untuk distro linaro debian, sudah di test
+di dragonboard 
 
 ```sh
 sudo apt-get install libcurl4-openssl-dev
-sudo apt-get install pthread
+sudo apt-get install pthread libsqlite3-dev
 ```
+x

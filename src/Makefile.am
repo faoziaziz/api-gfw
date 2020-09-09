@@ -9,4 +9,4 @@ api_gfw_client_SOURCES = main.c client.c
 # Program specific rules
 # example_CPPFLAGS = -I../inc
 # example_LDADD = 
-include_HEADERS = client.h 
+include_HEADERS = client.h conf.h
