@@ -50,7 +50,8 @@ int main(void)
     if(res != CURLE_OK)
       fprintf(stderr, "curl_easy_perform() failed: %s\n",
               curl_easy_strerror(res));
-
+    /* nambahin enter biar bisa keliatan dengan lebih mantap */
+    
     /* always cleanup */
     curl_easy_cleanup(curl);
   }

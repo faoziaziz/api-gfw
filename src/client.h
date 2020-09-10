@@ -8,17 +8,19 @@
 #define __client_h
 
 
-
+/* this code for include file */
 #include <stdio.h>
 #include <curl/curl.h>
 #include <sqlite3.h>
+#include <string.h>
+#include <stdlib.h>
 
 /* include configuration mode */
 #include "conf.h"
 
 /* just for testing */
 void client_tester();
-
+int sqlite3_tester();
 /* for implementing */
 void client_push();
 
