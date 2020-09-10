@@ -15,12 +15,19 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* configuration for gps */
+#include <unistd.h>
+#include <math.h>
+#include <errno.h>
+#include <gps.h>
 /* include configuration mode */
 #include "conf.h"
 
 /* just for testing */
 void client_tester();
 int sqlite3_tester();
+int insert_tester();
+int gps_tester();
 /* for implementing */
 void client_push();
 

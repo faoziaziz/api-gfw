@@ -30,4 +30,8 @@ AC_SEARCH_LIBS([sqlite3_libversion], [sqlite3], [], [
   AC_MSG_ERROR([sqlite3 belum diinstall])
 ])
 
+AC_SEARCH_LIBS([gps_stream], [gps], [], [
+  AC_MSG_ERROR([GPS belum diinstall])
+])
+
 AC_OUTPUT

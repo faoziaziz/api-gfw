@@ -39,4 +39,5 @@ di dragonboard
 sudo apt-get install libcurl4-openssl-dev
 sudo apt-get install pthread libsqlite3-dev
 ```
-x
+### Referensi 
+1. [gps](https://stackoverflow.com/questions/32000328/libgps-c-code-example)
