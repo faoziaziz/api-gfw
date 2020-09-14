@@ -20,6 +20,7 @@
 #include <math.h>
 #include <errno.h>
 #include <gps.h>
+
 /* include configuration mode */
 #include "conf.h"
 
@@ -28,6 +29,8 @@ void client_tester();
 int sqlite3_tester();
 int insert_tester();
 int gps_tester();
+int retreive_sql_tester();
+int callback(void *, int, char **, char **);
 /* for implementing */
 void client_push();
 

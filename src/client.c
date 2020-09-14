@@ -66,40 +66,7 @@ int insert_tester(){
   
 }
 
-/* test with gps testing */
-int gps_tester(){
-  int rc;
-//struct timeval tv;
-struct gps_data_t gps_data;
 
-if ((gps_open(GPSD_SHARED_MEMORY, NULL, &gps_data)) == -1) {
-    printf("code: %d, reason: %s\n", errno, gps_errstr(errno));
-    return EXIT_FAILURE;
-}
-
-for(int i=0; i<10; i++) {
-        /* read data */
-        if ((gps_read(&gps_data,NULL,0)) == -1) {
-            printf("error occured reading gps data. code: %d, reason: %s\n", errno, gps_errstr(errno));
-        } else {
-            /* Display data from the GPS receiver. */
-            if ((gps_data.status == STATUS_FIX) && 
-                (gps_data.fix.mode == MODE_2D || gps_data.fix.mode == MODE_3D) &&
-                !isnan(gps_data.fix.latitude) && 
-                !isnan(gps_data.fix.longitude)) {
-                    printf("latitude: %f, longitude: %f, speed: %f, timestamp: %lf\n", gps_data.fix.latitude, gps_data.fix.longitude, gps_data.fix.speed, gps_data.fix.time);
-            } else {
-                printf("no GPS data available\n");
-            }
-        }
-
-    sleep(3);
-}
-
-/* When you are done... */
-gps_close (&gps_data);
-return 0;  
-}
 /* try check with sqlite3 */
 int sqlite3_tester(){
   /* this function just check the sqlite in general */
@@ -131,6 +98,57 @@ int sqlite3_tester(){
 
   return 2;
 
+}
+
+/* retrevie and callback sqlite*/
+int retreive_sql_tester(){
+  sqlite3 *db;
+    char *err_msg = 0;
+    
+    int rc = sqlite3_open("test.db", &db);
+    
+    if (rc != SQLITE_OK) {
+        
+        fprintf(stderr, "Cannot open database: %s\n", 
+                sqlite3_errmsg(db));
+        sqlite3_close(db);
+        
+        return 1;
+    }
+    
+    char *sql = "SELECT * FROM Cars";
+        
+    rc = sqlite3_exec(db, sql, callback, 0, &err_msg);
+    
+    if (rc != SQLITE_OK ) {
+        
+        fprintf(stderr, "Failed to select data\n");
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+        
+        return 1;
+    } 
+    
+    sqlite3_close(db);
+    
+    return 0;
+}
+
+int callback(void *NotUsed, int argc, char **argv, 
+                    char **azColName) {
+    
+    NotUsed = 0;
+    
+    for (int i = 0; i < argc; i++) {
+
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+    
+    printf("\n");
+    
+    return 0;
 }
 
 /* try push to the server */

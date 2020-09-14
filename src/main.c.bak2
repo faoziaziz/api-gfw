@@ -14,7 +14,7 @@ int main(int argc, char **argv)
   /* for localdatabase */
   sqlite3_tester();
   insert_tester();
-retreive_sql_tester();
+
 
   return 0;
 }
