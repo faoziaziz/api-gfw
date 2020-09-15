@@ -1,6 +1,6 @@
 # AM_* rules are common to all programs
 AM_CPPFLAGS = -g -O2 -Wall
-AM_LDFLAGS = -lm -lcurl -lpthread
+AM_LDFLAGS = -lm -lcurl -lpthread ../libgps/build/libgps.a
 
 bin_PROGRAMS = api-gfw-client
 
