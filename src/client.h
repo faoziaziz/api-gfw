@@ -27,6 +27,7 @@
 /* just for testing */
 void client_tester();
 int sqlite3_tester();
+int test_parameterized();
 int insert_tester();
 int gps_tester();
 int retreive_sql_tester();
