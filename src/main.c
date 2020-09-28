@@ -17,6 +17,7 @@ int main(int argc, char **argv)
   insert_tester();
   test_parameterized();
   db_init();
+  insert_gps_to_localdb(12.31, 1231.21);
 
 
 

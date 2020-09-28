@@ -30,7 +30,9 @@ int db_init(){
     
     */
     
-    char *sql="CREATE TABLE IF NOT EXISTS GPS_data(Id INT AUTO_INCREMENT, Timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, Longitude FLOAT, Latitude FLOAT, Flag INT, PRIMARY KEY (Id));";
+    char *sql="CREATE TABLE IF NOT EXISTS GPS_data"
+    "(Id INT AUTO_INCREMENT, Timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+    " Longitude FLOAT, Latitude FLOAT, Flag INT, PRIMARY KEY (Id));";
     rc =sqlite3_exec(db,sql, 0,0,&err_msg);
 
     if(rc!=SQLITE_OK){
@@ -61,13 +63,29 @@ int insert_gps_to_localdb(float longitude, float latitude){
 
         x+=1;
     }
-    char *sql = "INSERT INTO GPS_data(Longitude, Latitude)values(123.123, 123.1231)";
 
-    
+    /* 
+        This code use for insert GPS_data to Longitude and Latitude 
+        */
+    char *sql = "INSERT INTO GPS_data(Longitude, Latitude)values(6969.6969, 123.1231)";
+
+    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+
+    if(rc!=SQLITE_OK){
+        fprintf(stderr, "Tidak berhasil menginsert ke table.\n");
+        sqlite3_free(err_msg);
+        x+=1;
+    } else {
+        fprintf(stdout, "Insert berhasil");
+    }
 
 
+    int last_id = sqlite3_last_insert_rowid(db);
+    printf("Index terakhir yang diinsert %d\n", last_id);
 
+    sqlite3_close(db);
     return x;
+
 }
 
 int update_flag_localdb(){
