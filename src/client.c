@@ -11,9 +11,6 @@ void client_tester(){
   /* this code just for get tester */
   printf("hai this is for from client_tester.\n");
   printf("sqlite versinya : %s\n", sqlite3_libversion());
-
-  
-
 }
 
 
