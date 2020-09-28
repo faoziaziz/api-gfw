@@ -266,3 +266,15 @@ void client_push(){
 }
 
 
+/*
+  @author : Aziz Amerul Faozi
+  @desc : this code use for convert data to json format before post to api
+*/
+
+int convert_to_json(){
+  int x=0;
+
+  
+  return x;
+
+}
