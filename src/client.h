@@ -32,6 +32,7 @@ int test_parameterized();
 int insert_tester();
 int gps_tester();
 int tester_json();
+void tester_json2();
 int retreive_sql_tester();
 int callback(void *, int, char **, char **);
 

@@ -4,7 +4,7 @@ AM_LDFLAGS = -lm -lcurl -lpthread
 
 bin_PROGRAMS = api-gfw-client
 
-api_gfw_client_SOURCES = main.c client.c database.c
+api_gfw_client_SOURCES = main.c client.c database.c tester.c
 #api_gfw_client_HEADERS = client.h
 # Program specific rules
 # example_CPPFLAGS = -I../inc

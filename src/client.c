@@ -297,6 +297,8 @@ char * setData(){
 
 int tester_json(){
 
+  /* tester json 1 */
+
   
   struct json_object *jobj;
   const char *question = "Mum, clouds hide alien spaceships don't they ?";
@@ -327,7 +329,7 @@ int tester_json(){
  
   for (i = 0; json_flags[i].flag_str != NULL; i++) {
     printf("\nFlag %s:\n---x-x-x-xx\n", json_flags[i].flag_str);
-    printf("%s\n---x-x-x-x\n", json_object_to_json_string_ext(jobj, json_flags[i].flag));
+    printf("%s\n---x-x-x-x\n", json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY));
   }
  
   json_object_put(jobj); // Delete the json object
