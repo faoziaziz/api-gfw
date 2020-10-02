@@ -20,7 +20,8 @@
 #include <math.h>
 #include <errno.h>
 #include <gps.h>
-
+/* untuk nambahin methode json */
+#include <json-c/json.h>
 /* include configuration mode */
 #include "conf.h"
 
@@ -30,8 +31,12 @@ int sqlite3_tester();
 int test_parameterized();
 int insert_tester();
 int gps_tester();
+int tester_json();
 int retreive_sql_tester();
 int callback(void *, int, char **, char **);
+
+char * setData();
+
 /* for implementing */
 void client_push();
 

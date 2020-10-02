@@ -34,4 +34,9 @@ AC_SEARCH_LIBS([gps_stream], [gps], [], [
   AC_MSG_ERROR([GPS belum diinstall])
 ])
 
+AC_SEARCH_LIBS([json_object_object_add], [json-c], [], [
+  AC_MSG_ERROR([json-c belum diinstall])
+])
+
+
 AC_OUTPUT
