@@ -59,3 +59,4 @@ make && sudo make install
 2. [sqlitec](http://zetcode.com/db/sqlitec/)
 3. [gpsd](https://discuss.96boards.org/t/db820c-gps-not-working-on-linux/4449/49)
 4. [libjson-c](http://www.linuxfromscratch.org/blfs/view/svn/general/json-c.html)
+5. [libapi](https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a27bd808a022251059a43f1f6370441cd)
