@@ -273,7 +273,20 @@ void client_push(){
 int convert_to_json(){
   int x=0;
 
-  
+  struct json_object *jobj;
+  const char *question= "ini string question";
+  const char * answer = "javaban";
+
+  jobj = json_object_new_object();
+  json_object_object_add(jobj, "question", json_object_new_string(question));
+  json_object_object_add(jobj, "answer", json_object_new_string(answer));
+
+  printf("\n=======JSONnya \n%s\n=====\n",
+	 json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY));
+
+  /* untuk testing delete json object */
+  json_object_put(jobj);
+
   return x;
 
 }
@@ -303,6 +316,7 @@ int tester_json(){
   struct json_object *jobj;
   const char *question = "Mum, clouds hide alien spaceships don't they ?";
   const char *answer = "Of course not! (\"sigh\")";
+
   int i;
 
   struct {

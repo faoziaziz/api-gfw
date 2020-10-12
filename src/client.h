@@ -20,8 +20,10 @@
 #include <math.h>
 #include <errno.h>
 #include <gps.h>
+
 /* untuk nambahin methode json */
 #include <json-c/json.h>
+
 /* include configuration mode */
 #include "conf.h"
 
@@ -35,7 +37,7 @@ int tester_json();
 void tester_json2();
 int retreive_sql_tester();
 int callback(void *, int, char **, char **);
-
+int convert_to_json();
 char * setData();
 
 /* for implementing */
