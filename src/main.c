@@ -10,19 +10,22 @@ int main(int argc, char **argv)
 {
   int check;
   /* tester checker */
-  /*
-    client_tester();
-    client_push();*/
-  /* for localdatabase */
-  /*
+ 
+  client_tester();
+  client_push();
+ 
 
-    sqlite3_tester();
-    insert_tester();
-    test_parameterized();
-    tester_json2();
-    db_init();
-    insert_gps_to_localdb(12.31, 1231.21);
-  */
+  /* for localdatabase */
+
+ 
+
+  sqlite3_tester();
+  insert_tester();
+  test_parameterized();
+  tester_json2();
+  db_init();
+  insert_gps_to_localdb(12.31, 1231.21);
+ 
   convert_to_json();
 
 

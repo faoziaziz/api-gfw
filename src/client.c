@@ -299,7 +299,7 @@ int convert_to_json(){
 char * setData(){
 
   /* Get data from sqlite3 */
-  char * jsonFormat="{\"id\":\"Client123421994\", \"device\": \"dev112\", \"longitude\": 123.321, \"latitude\": 321.12, \"DateStamp\": \"dumidateas\"}";
+  char * jsonFormat="{\"id\":\"Client123421994\", \"device\": \"dev112\", \"longitude\": 123.321, \"latitude\": 321.12, \"DateStamp\": \"darilabseni\"}";
   
 
   /* then convert to json */
