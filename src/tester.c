@@ -7,6 +7,7 @@ void tester_json2(){
   const char *qontol = "Em, sebuah kontol yang besar?";
   const double panjang = 123.123;
 
+  /* make json before push to server */
   jobj=json_object_new_object();
   json_object_object_add(jobj, "deskripsi", json_object_new_string(qontol));
   json_object_object_add(jobj, "panjang", json_object_new_double(panjang));

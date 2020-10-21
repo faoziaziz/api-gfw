@@ -4,7 +4,7 @@
   descrip : This code use for user accusition
 */
 #include "client.h"
-
+struct content_data_gps cont_gps;
 /* client tester */
 void client_tester(){
   /* this code just for get tester */
@@ -197,15 +197,66 @@ void client_push(){
   int url_length;
   char *url_complete;
 
-  /* add json object */
-  // ini untuk variable object json
-  char* jsonObj =setData();
-  
-  struct curl_slist *headers = NULL;
 
+  /* karepmu */
+  /* Get data from sqlite3 */
+  char * jsonFormat[1000];
+  struct json_object *jobj;
+  const char *id = "dragon1234";
+  /* variable untuk post api */
+  double online= 1.1, 
+  status=2.2, mode=3.3, time_stamp=4.4, altitude=5.5, speed=6.6, track=7.7, pdop=8.8, longitude=9.9, latitude=10.10, sateliteUsed=11.11;
+  const char *datestamp="dada";
+  const char *device= "dragon1";
+  struct curl_slist *headers = NULL;
   
+  /*
+  
+    {
+      "id":"bokerdinerak4",
+      "online":123.1231,
+      "status":123.231,
+      "mode":123.021,
+      "time":123.021,
+      "altitude":32.12,
+      "speed":42.12,
+      "track":12.32,
+      "pdop":21.12,
+      "longitude":123.321,
+      "latitude":321.12,
+      "dateStamp":"cerol",
+      "device":"dev112",
+      "sateliteUsed":123.231
+    }
+  */
   CURL *curl;
   CURLcode res;
+  /* check to gps */
+  
+  printf("mantap %10.0f \n", cont_gps.online);
+  /* set json object */
+  jobj=json_object_new_object();
+  /* id */
+  json_object_object_add(jobj, "id", json_object_new_string(id));
+  /* float */
+  json_object_object_add(jobj, "online", json_object_new_double(online));
+  json_object_object_add(jobj, "status", json_object_new_double(status));
+  json_object_object_add(jobj, "mode", json_object_new_double(mode));
+  json_object_object_add(jobj, "time", json_object_new_double(time_stamp));
+  json_object_object_add(jobj, "altitude", json_object_new_double(altitude));
+  json_object_object_add(jobj, "speed", json_object_new_double(longitude));
+  json_object_object_add(jobj, "track", json_object_new_double(latitude));
+  json_object_object_add(jobj, "pdop", json_object_new_double(pdop));
+  json_object_object_add(jobj, "longitude", json_object_new_double(longitude));
+  json_object_object_add(jobj, "latitude", json_object_new_double(latitude));
+  /* string */
+  json_object_object_add(jobj, "dateStamp", json_object_new_string(datestamp));
+  json_object_object_add(jobj, "device", json_object_new_string(device));
+  /* float */
+  json_object_object_add(jobj, "sateliteUsed", json_object_new_double(sateliteUsed));
+
+  //strcpy(jsonFormat, json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY)));
+
   
 
   /* just for push to the server */
@@ -244,7 +295,7 @@ void client_push(){
   if(curl){
     curl_easy_setopt(curl, CURLOPT_URL, url_complete);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonObj);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY));
     res = curl_easy_perform(curl);
 
     /* Check for errors */
@@ -256,85 +307,11 @@ void client_push(){
   }
 
   printf("\n");
-
+  /* release json object */
+  json_object_put(jobj); 
   /* lets free */
   free(url_complete);
   // release memory for url completed
   curl_global_cleanup();
   
 }
-
-
-/*
-  @author : Aziz Amerul Faozi
-  @desc : this code use for convert data to json format before post to api
-*/
-
-int convert_to_json(){
-  int x=0;
-
-  
-  return x;
-
-}
-
-
-/*
-  @author: Aziz Amerul Faozi
-  @desc : client function before push to server 
-*/
-char * setData(){
-
-  /* Get data from sqlite3 */
-  char * jsonFormat="{\"id\":\"Client123421994\", \"device\": \"dev112\", \"longitude\": 123.321, \"latitude\": 321.12, \"DateStamp\": \"dumidateas\"}";
-  
-
-  /* then convert to json */
-  return jsonFormat;
-  
-
-}
-
-int tester_json(){
-
-  /* tester json 1 */
-
-  
-  struct json_object *jobj;
-  const char *question = "Mum, clouds hide alien spaceships don't they ?";
-  const char *answer = "Of course not! (\"sigh\")";
-  int i;
-
-  struct {
-    int flag;
-    const char *flag_str;
-  } json_flags[] = {
-		    { JSON_C_TO_STRING_PLAIN, "JSON_C_TO_STRING_PLAIN" },
-		    { JSON_C_TO_STRING_SPACED, "JSON_C_TO_STRING_SPACED" },
-		    { JSON_C_TO_STRING_PRETTY, "JSON_C_TO_STRING_PRETTY" },
-		    { JSON_C_TO_STRING_NOZERO, "JSON_C_TO_STRING_NOZERO" },
-		    { JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY, "JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY" },
-		    { -1, NULL }
-  }; // Create an anonymous struct, instanciate an array and fill it
- 
-  printf("Using printf(): \"%s\", \"%s\"\n\n", question, answer);
-  printf("Using json_object_to_json_string_ext():\n");
- 
-  /*
-   * The following create an object and add the question and answer to it.
-   */
-  jobj = json_object_new_object();
-  json_object_object_add(jobj, "question", json_object_new_string(question));
-  json_object_object_add(jobj, "answer", json_object_new_string(answer));
- 
-  for (i = 0; json_flags[i].flag_str != NULL; i++) {
-    printf("\nFlag %s:\n---x-x-x-xx\n", json_flags[i].flag_str);
-    printf("%s\n---x-x-x-x\n", json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY));
-  }
- 
-  json_object_put(jobj); // Delete the json object
- 
-  return 0;
-
-}
-

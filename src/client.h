@@ -14,6 +14,7 @@
 #include <sqlite3.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 /* configuration for gps */
 #include <unistd.h>
@@ -40,5 +41,24 @@ char * setData();
 
 /* for implementing */
 void client_push();
+void accgps(void);
+
+/* for data gps */
+struct content_data_gps {
+  double online;
+  double status;
+  double statelite_used;
+  double mode;
+  double time;
+  double latitude;
+  double longitude;
+  double altitude;
+  double speed;
+  double track;
+  double pdop;
+};
+
+/* extern unutuk data gps */
+extern struct content_data_gps cont_gps;
 
 #endif
