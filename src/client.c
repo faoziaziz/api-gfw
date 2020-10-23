@@ -233,7 +233,38 @@ void client_push(){
   CURLcode res;
   /* check to gps */
   
-  printf("mantap %10.0f \n", cont_gps.online);
+  int ret;
+  struct gps_data_t gps_data;
+
+  printf("masukk ke gps . . . \n");
+  ret = gps_open("localhost", "2947", &gps_data);
+  (void)gps_stream(&gps_data, WATCH_ENABLE | WATCH_JSON, NULL);
+
+        for (;;) {
+
+                /* Put this in a loop with a call to a high resolution sleep () in it. */
+                if (gps_waiting(&gps_data, 500)) {
+                        errno = 0;
+                        if (gps_read(&gps_data) == -1) {
+                                printf("Read error\n");
+                                exit(1);
+                        } else {
+                                if (gps_data.set) {
+                                        online= gps_data.online;
+                                        status= gps_data.status;
+                                        sateliteUsed= gps_data.satellites_used;
+                                        mode=gps_data.fix.mode;
+                                        time_stamp=gps_data.fix.time;
+                                        latitude=gps_data.fix.latitude;
+                                        longitude=gps_data.fix.longitude;
+                                        altitude=gps_data.fix.altitude;
+                                        speed=gps_data.fix.speed;
+                                        track= gps_data.fix.track;
+                                        pdop=gps_data.dop.pdop;
+                                }
+                        }
+                }
+        }
   /* set json object */
   jobj=json_object_new_object();
   /* id */
