@@ -196,9 +196,7 @@ void client_push(){
   char loc_post[] = "/add";
   int url_length;
   char *url_complete;
-
-
-  /* karepmu */
+  
   /* Get data from sqlite3 */
   char * jsonFormat[1000];
   struct json_object *jobj;
@@ -207,64 +205,14 @@ void client_push(){
   double online= 1.1, 
   status=2.2, mode=3.3, time_stamp=4.4, altitude=5.5, speed=6.6, track=7.7, pdop=8.8, longitude=9.9, latitude=10.10, sateliteUsed=11.11;
   const char *datestamp="dada";
-  const char *device= "dragon1";
+  //char *device;
   struct curl_slist *headers = NULL;
   
-  /*
-  
-    {
-      "id":"bokerdinerak4",
-      "online":123.1231,
-      "status":123.231,
-      "mode":123.021,
-      "time":123.021,
-      "altitude":32.12,
-      "speed":42.12,
-      "track":12.32,
-      "pdop":21.12,
-      "longitude":123.321,
-      "latitude":321.12,
-      "dateStamp":"cerol",
-      "device":"dev112",
-      "sateliteUsed":123.231
-    }
-  */
   CURL *curl;
   CURLcode res;
   /* check to gps */
   
   int ret;
-  struct gps_data_t gps_data;
-
-  printf("masukk ke gps . . . \n");
-  ret = gps_open("localhost", "2947", &gps_data);
-  (void)gps_stream(&gps_data, WATCH_ENABLE | WATCH_JSON, NULL);
-
-        for (;;) {
-
-                /* Put this in a loop with a call to a high resolution sleep () in it. */
-                if (gps_waiting(&gps_data, 500)) {
-                        errno = 0;
-                        if (gps_read(&gps_data) == -1) {
-                                printf("Read error\n");
-                                exit(1);
-                        } else {
-                                if (gps_data.set) {
-                                        online= gps_data.online;
-                                        status= gps_data.status;
-                                        sateliteUsed= gps_data.satellites_used;
-                                        mode=gps_data.fix.mode;
-                                        time_stamp=gps_data.fix.time;
-                                        latitude=gps_data.fix.latitude;
-                                        longitude=gps_data.fix.longitude;
-                                        altitude=gps_data.fix.altitude;
-                                        speed=gps_data.fix.speed;
-                                        track= gps_data.fix.track;
-                                        pdop=gps_data.dop.pdop;
-                                }
-                        }
-                }
-        }
   /* set json object */
   jobj=json_object_new_object();
   /* id */
@@ -282,7 +230,7 @@ void client_push(){
   json_object_object_add(jobj, "latitude", json_object_new_double(latitude));
   /* string */
   json_object_object_add(jobj, "dateStamp", json_object_new_string(datestamp));
-  json_object_object_add(jobj, "device", json_object_new_string(device));
+  json_object_object_add(jobj, "device", json_object_new_string(DEVICE));
   /* float */
   json_object_object_add(jobj, "sateliteUsed", json_object_new_double(sateliteUsed));
 
