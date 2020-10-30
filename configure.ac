@@ -38,5 +38,8 @@ AC_SEARCH_LIBS([json_object_object_add], [json-c], [], [
   AC_MSG_ERROR([json-c belum diinstall])
 ])
 
+AC_SEARCH_LIBS([uuid_parse], [uuid], [], [
+AC_MSG_ERROR([perlu install uuid-dev.])
 
+])
 AC_OUTPUT

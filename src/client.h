@@ -21,6 +21,10 @@
 #include <math.h>
 #include <errno.h>
 #include <gps.h>
+#include <uuid/uuid.h>
+#include <stdio.h>
+#include <time.h>
+
 /* untuk nambahin methode json */
 #include <json-c/json.h>
 /* include configuration mode */

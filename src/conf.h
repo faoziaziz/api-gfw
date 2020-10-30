@@ -7,6 +7,12 @@
 #define URL_API "http://server.faozi.tech:8083/api-gfw/v1"
 #define DEVICE "DRAGON001"
 
+/* Uncomment to always generate capital UUIDs. */
+#define capitaluuid true
+
+/* Uncomment to always generate lower-case UUIDs. */
+//#define lowercaseuuid true
+
 
 #endif
 
