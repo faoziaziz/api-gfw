@@ -200,23 +200,50 @@ void client_push(){
   /* Get data from sqlite3 */
   char * jsonFormat[1000];
   struct json_object *jobj;
-  const char *id = "dragon1234";
-  /* variable untuk post api */
-  double online= 1.1, 
-  status=2.2, mode=3.3, time_stamp=4.4, altitude=5.5, speed=6.6, track=7.7, pdop=8.8, longitude=9.9, latitude=10.10, sateliteUsed=11.11;
-  const char *datestamp="dada";
-  //char *device;
-  struct curl_slist *headers = NULL;
+  uuid_t uuid;
+  char uuid_str[37]; // bagian id diupdate dengan uuid
   
+  /* variable untuk post api nilai ini adalah nilai default  */
+  double online= 1.1,
+    status=2.2,
+    mode=3.3,
+    time_stamp=4.4,
+    altitude=5.5,
+    speed=6.6,
+    track=7.7,
+    pdop=8.8,
+    longitude=9.9,
+    latitude=10.10,
+    sateliteUsed=11.11;
+  
+  const char *datestamp="dada";
+  struct curl_slist *headers = NULL;
   CURL *curl;
   CURLcode res;
-  /* check to gps */
-  
   int ret;
+  // setting time
+  time_t now = time(&now);
+  struct tm *ptm = gmtime(&now);
+  
+  // get uuid
+  uuid_generate_time_safe(uuid);
+  uuid_unparse_lower(uuid, uuid_str);
+
+  if (now == -1) {     
+    puts("The time() function failed");
+  }
+    
+  if (ptm == NULL) {
+        
+    puts("The gmtime() function failed");
+  }    
+    
+  printf("UTC time: %s", asctime(ptm));
+
   /* set json object */
   jobj=json_object_new_object();
   /* id */
-  json_object_object_add(jobj, "id", json_object_new_string(id));
+  json_object_object_add(jobj, "id", json_object_new_string(uuid_str));
   /* float */
   json_object_object_add(jobj, "online", json_object_new_double(online));
   json_object_object_add(jobj, "status", json_object_new_double(status));
@@ -229,7 +256,7 @@ void client_push(){
   json_object_object_add(jobj, "longitude", json_object_new_double(longitude));
   json_object_object_add(jobj, "latitude", json_object_new_double(latitude));
   /* string */
-  json_object_object_add(jobj, "dateStamp", json_object_new_string(datestamp));
+  json_object_object_add(jobj, "dateStamp", json_object_new_string(asctime(ptm)));
   json_object_object_add(jobj, "device", json_object_new_string(DEVICE));
   /* float */
   json_object_object_add(jobj, "sateliteUsed", json_object_new_double(sateliteUsed));
@@ -292,5 +319,5 @@ void client_push(){
   free(url_complete);
   // release memory for url completed
   curl_global_cleanup();
-  
+  uuid_clear(uuid);
 }

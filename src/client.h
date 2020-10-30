@@ -15,12 +15,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <uuid/uuid.h>
 
 /* configuration for gps */
 #include <unistd.h>
 #include <math.h>
 #include <errno.h>
 #include <gps.h>
+#include <time.h>
 /* untuk nambahin methode json */
 #include <json-c/json.h>
 /* include configuration mode */
