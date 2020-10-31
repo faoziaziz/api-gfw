@@ -28,6 +28,22 @@
 /* include configuration mode */
 #include "conf.h"
 
+/* for data gps */
+typedef struct cdg {
+  double online;
+  double status;
+  double sateliteUsed;
+  double mode;
+  double time_stamp;
+  double latitude;
+  double longitude;
+  double altitude;
+  double speed;
+  double track;
+  double pdop;
+} content_data_gps;
+
+
 /* just for testing */
 void client_tester();
 int sqlite3_tester();
@@ -42,25 +58,11 @@ int callback(void *, int, char **, char **);
 char * setData();
 
 /* for implementing */
-void client_push();
+
 void accgps(void);
 
-/* for data gps */
-struct content_data_gps {
-  double online;
-  double status;
-  double statelite_used;
-  double mode;
-  double time;
-  double latitude;
-  double longitude;
-  double altitude;
-  double speed;
-  double track;
-  double pdop;
-};
 
 /* extern unutuk data gps */
-extern struct content_data_gps cont_gps;
+void client_push(content_data_gps cont_gps);
 
 #endif

@@ -4,7 +4,8 @@
   descrip : This code use for user accusition
 */
 #include "client.h"
-struct content_data_gps cont_gps;
+//struct content_data_gps cont_gps;
+
 /* client tester */
 void client_tester(){
   /* this code just for get tester */
@@ -190,7 +191,7 @@ int callback(void *NotUsed, int argc, char **argv,
 }
 
 /* try push to the server */
-void client_push(){
+void client_push(content_data_gps cont_gps){
 
   /* deklarasi untuk definisi variable */
   char loc_post[] = "/add";
@@ -203,18 +204,8 @@ void client_push(){
   uuid_t uuid;
   char uuid_str[37]; // bagian id diupdate dengan uuid
   
-  /* variable untuk post api nilai ini adalah nilai default  */
-  double online= 1.1,
-    status=2.2,
-    mode=3.3,
-    time_stamp=4.4,
-    altitude=5.5,
-    speed=6.6,
-    track=7.7,
-    pdop=8.8,
-    longitude=9.9,
-    latitude=10.10,
-    sateliteUsed=11.11;
+
+  
   
   const char *datestamp="dada";
   struct curl_slist *headers = NULL;
@@ -245,21 +236,21 @@ void client_push(){
   /* id */
   json_object_object_add(jobj, "id", json_object_new_string(uuid_str));
   /* float */
-  json_object_object_add(jobj, "online", json_object_new_double(online));
-  json_object_object_add(jobj, "status", json_object_new_double(status));
-  json_object_object_add(jobj, "mode", json_object_new_double(mode));
-  json_object_object_add(jobj, "time", json_object_new_double(time_stamp));
-  json_object_object_add(jobj, "altitude", json_object_new_double(altitude));
-  json_object_object_add(jobj, "speed", json_object_new_double(longitude));
-  json_object_object_add(jobj, "track", json_object_new_double(latitude));
-  json_object_object_add(jobj, "pdop", json_object_new_double(pdop));
-  json_object_object_add(jobj, "longitude", json_object_new_double(longitude));
-  json_object_object_add(jobj, "latitude", json_object_new_double(latitude));
+  json_object_object_add(jobj, "online", json_object_new_double(cont_gps.online));
+  json_object_object_add(jobj, "status", json_object_new_double(cont_gps.status));
+  json_object_object_add(jobj, "mode", json_object_new_double(cont_gps.mode));
+  json_object_object_add(jobj, "time", json_object_new_double(cont_gps.time_stamp));
+  json_object_object_add(jobj, "altitude", json_object_new_double(cont_gps.altitude));
+  json_object_object_add(jobj, "speed", json_object_new_double(cont_gps.longitude));
+  json_object_object_add(jobj, "track", json_object_new_double(cont_gps.latitude));
+  json_object_object_add(jobj, "pdop", json_object_new_double(cont_gps.pdop));
+  json_object_object_add(jobj, "longitude", json_object_new_double(cont_gps.longitude));
+  json_object_object_add(jobj, "latitude", json_object_new_double(cont_gps.latitude));
   /* string */
   json_object_object_add(jobj, "dateStamp", json_object_new_string(asctime(ptm)));
   json_object_object_add(jobj, "device", json_object_new_string(DEVICE));
   /* float */
-  json_object_object_add(jobj, "sateliteUsed", json_object_new_double(sateliteUsed));
+  json_object_object_add(jobj, "sateliteUsed", json_object_new_double(cont_gps.sateliteUsed));
 
   //strcpy(jsonFormat, json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY)));
 

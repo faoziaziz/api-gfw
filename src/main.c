@@ -6,12 +6,15 @@
 #include "client.h"
 #include "database.h"
 
+
+
 int main(int argc, char **argv)
 {
     int check;
+    content_data_gps cont_gps;
   /* tester checker */
     // client_tester();
-  client_push();
+  client_push(cont_gps);
   /* for localdatabase */
   //accgps();
   //sqlite3_tester();
