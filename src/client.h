@@ -43,8 +43,10 @@ typedef struct cdg {
   double pdop;
 } content_data_gps;
 
+/* untuk push data gps */
+void client_push(content_data_gps cont_gps); /* just for testing */
 
-/* just for testing */
+
 void client_tester();
 int sqlite3_tester();
 int test_parameterized();
@@ -54,7 +56,7 @@ int tester_json();
 void tester_json2();
 int retreive_sql_tester();
 int callback(void *, int, char **, char **);
-
+void log_error(char *msq, char *file,  int line);
 char * setData();
 
 /* for implementing */
@@ -62,7 +64,7 @@ char * setData();
 void accgps(void);
 
 
-/* extern unutuk data gps */
-void client_push(content_data_gps cont_gps);
+
+
 
 #endif
