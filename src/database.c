@@ -23,6 +23,37 @@ void save_to_database(){
 		sqlite3_close(db);
 	}
 
+	/* insrting query */
+
+	char *sql = "INSERT INTO GPS_data("
+		"online, "
+		"status, "
+		"sateliteUsed, "
+		"mode, "
+		"time_stamp, "
+		"latitude, "
+		"longitude, "
+		"altitude, "
+		"speed, "
+		"track, "
+		"pdop"
+		") values ("
+		"@online, "
+		"@status, "
+		"@sateliteUsed, "
+		"@mode, "
+		"@time_stamp, "
+		"@latitude, "
+		"@longitude, "
+		"@altitude, "
+		"@speed, "
+		"@track, "
+		"@pdop"
+		")";
+
+
+
+
 
 
 
@@ -78,6 +109,8 @@ int db_init(){
 		/* exekusi error */
 	}
 
+
+
 	/* close database */
 	return x;
 }
@@ -85,16 +118,15 @@ int db_init(){
 /* This code use to insert gps data to gps db */
 int insert_gps_to_localdb(float longitude, float latitude){
 
+	/* variable for localdatabse */
 	sqlite3 *db;
 	char *err_msg=0;
 	int x = 0;
-
 	int rc = sqlite3_open("/opt/gfw/gps_client.db", &db);
 
 	if(rc !=SQLITE_OK){
 		fprintf(stderr, "Tidak bisa membuka database. %s\n",sqlite3_errmsg(db) );
 		sqlite3_close(db);
-
 		x+=1;
 	}
 
