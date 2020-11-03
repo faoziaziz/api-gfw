@@ -58,11 +58,14 @@ int retreive_sql_tester();
 int callback(void *, int, char **, char **);
 void log_error(char *msq, char *file,  int line);
 char * setData();
-
+void get_data_gps(content_data_gps *cont_gps);
 /* for implementing */
 
 void accgps(void);
+/* database access */
 
+int db_init();
+void save_to_database(content_data_gps cont_gps);
 
 
 

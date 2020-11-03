@@ -5,10 +5,10 @@ void get_data_gps(content_data_gps *cont_gps){
 	cont_gps->sateliteUsed=3.1;
 	cont_gps->mode=4.1;
 	cont_gps->time_stamp=5.1;
-	cont_gps->latitude=6.1;
+	cont_gps->latitude=6.9;
 	cont_gps->longitude=7.1;
 	cont_gps->altitude=8.1;
-	cont_gps->speed=9.1;
+	cont_gps->speed=9.9;
 	cont_gps->track=10.1;
 	cont_gps->pdop=11.1;
 }

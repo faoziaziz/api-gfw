@@ -6,7 +6,7 @@
  *	@desc: untuk mengesave data gps ke sqlite3
  *
  * */
-void save_to_database(){
+void save_to_database(content_data_gps cont_gps){
 	/* ada beberapa hal yang perlu diperhatikan beberapa
 	 * struct gps yang harus di save
 	 *
@@ -14,6 +14,11 @@ void save_to_database(){
 	 * */ 
 
 	sqlite3 *db;
+	sqlite3_stmt *res;
+	int flag=0;
+
+	/* some variable */
+
 	/* open file database */
 	int rc = sqlite3_open("/opt/gfw/gps_client.db", &db);
 	/* for checking connection */
@@ -36,7 +41,8 @@ void save_to_database(){
 		"altitude, "
 		"speed, "
 		"track, "
-		"pdop"
+		"pdop, " 
+		"flag"
 		") values ("
 		"@online, "
 		"@status, "
@@ -48,13 +54,55 @@ void save_to_database(){
 		"@altitude, "
 		"@speed, "
 		"@track, "
-		"@pdop"
+		"@pdop, "
+		"@flag "
 		")";
+	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
 
 
+	if (rc==SQLITE_OK){
+		/* getting location index on sql */
+		int id_online = sqlite3_bind_parameter_index(res, "@online");
+		int id_status = sqlite3_bind_parameter_index(res, "@status");
+		int id_sateliteUsed = sqlite3_bind_parameter_index(res, "@sateliteUsed");
+		int id_mode = sqlite3_bind_parameter_index(res, "@mode");
+		int id_time_stamp = sqlite3_bind_parameter_index(res, "@time_stamp");
+		int id_latitude = sqlite3_bind_parameter_index(res, "@latitude");
+		int id_longitude = sqlite3_bind_parameter_index(res, "@longitude");
+		int id_altitude = sqlite3_bind_parameter_index(res, "@altitude");
+		int id_speed = sqlite3_bind_parameter_index(res, "@speed");
+		int id_track = sqlite3_bind_parameter_index(res, "@track");
+		int id_pdop = sqlite3_bind_parameter_index(res, "@pdop");
+		int id_flag = sqlite3_bind_parameter_index(res, "@flag");
 
+		/* binding double float  */
+		sqlite3_bind_double(res, id_online, cont_gps.online);
+		sqlite3_bind_double(res, id_status, cont_gps.status);
+		sqlite3_bind_double(res, id_sateliteUsed, cont_gps.sateliteUsed);
+		sqlite3_bind_double(res, id_mode, cont_gps.mode);
+		sqlite3_bind_double(res, id_time_stamp, cont_gps.time_stamp);
+		sqlite3_bind_double(res, id_latitude, cont_gps.latitude);
+		sqlite3_bind_double(res, id_longitude, cont_gps.longitude);
+		sqlite3_bind_double(res, id_altitude, cont_gps.altitude);
+		sqlite3_bind_double(res, id_speed, cont_gps.speed);
+		sqlite3_bind_double(res, id_track, cont_gps.track);
+		sqlite3_bind_double(res, id_pdop, cont_gps.pdop);
+		sqlite3_bind_int(res, id_flag, flag);
 
+	} else {
+		fprintf(stderr, "Failed to execute statement : %s", sqlite3_errmsg(db));
+		log_error("Statement gak bisa dieksekusi\n", __FILE__, __LINE__);
 
+	}
+	printf("database saved.\n");
+	sqlite3_step(res);
+	sqlite3_finalize(res);
+	sqlite3_close(db);
+
+}
+
+/* fungsi ini digunakan untuk membaca data dari sqlite*/
+void read_from_database (content_data_gps *cont_gps){
 
 
 }
@@ -95,7 +143,8 @@ int db_init(){
 		"altitude FLOAT, "
 		"speed FLOAT, "
 		"track FLOAT, "
-		"pdop FLOAT "
+		"pdop FLOAT, "
+		"flag INTEGER "
 		");";
 
 	rc =sqlite3_exec(db,sql, 0,0,&err_msg);
