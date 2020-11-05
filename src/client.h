@@ -33,7 +33,7 @@ typedef struct cdg {
   double online;
   double status;
   double sateliteUsed;
-  double mode;
+  double  mode;
   double time_stamp;
   double latitude;
   double longitude;
@@ -59,6 +59,7 @@ int callback(void *, int, char **, char **);
 void log_error(char *msq, char *file,  int line);
 char * setData();
 void get_data_gps(content_data_gps *cont_gps);
+void read_from_database(content_data_gps *cont_gps);
 /* for implementing */
 
 void accgps(void);
@@ -66,8 +67,8 @@ void accgps(void);
 
 int db_init();
 void save_to_database(content_data_gps cont_gps);
-
-
+void read_from_database(content_data_gps *cont_gps);
+void accgps();
 
 
 #endif
