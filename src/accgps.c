@@ -38,6 +38,7 @@ void accgps(content_data_gps *cont_gps)
 					if( gps_data.online==gps_data.online
 							&&gps_data.status==gps_data.status
 							&&gps_data.satellites_used==gps_data.satellites_used
+							&&gps_data.satellites_used>=3
 							&&gps_data.fix.mode==gps_data.fix.mode
 							&&gps_data.fix.time==gps_data.fix.time
 							&&gps_data.fix.latitude==gps_data.fix.latitude
@@ -46,18 +47,20 @@ void accgps(content_data_gps *cont_gps)
 							&&gps_data.fix.speed==gps_data.fix.speed
 							&&gps_data.fix.track==gps_data.fix.track
 							&&gps_data.dop.pdop==gps_data.dop.pdop){
-                                        printf("\n--- GPS ---\n");
-                                        printf("gps_data.online:           %10.0f\n", gps_data.online);
-                                        printf("gps_data.status:           %f\n", (double)gps_data.status);
-                                        printf("gps_data.satellites_used:  %f\n", (double)gps_data.satellites_used);
-                                        printf("gps_data.fix.mode:         %f\n", (double)gps_data.fix.mode);
-                                        printf("gps_data.fix.time:         %10.0f\n", gps_data.fix.time);
-                                        printf("gps_data.fix.latitude:     %f\n", gps_data.fix.latitude);
-                                        printf("gps_data.fix.longitude:    %f\n", gps_data.fix.longitude);
-                                        printf("gps_data.fix.altitude:     %f\n", gps_data.fix.altitude);
-                                        printf("gps_data.fix.speed:        %f\n", gps_data.fix.speed);
-                                        printf("gps_data.fix.track:        %f\n", gps_data.fix.track);
-                                        printf("gps_data.dop.pdop:         %f\n", gps_data.dop.pdop);
+                                        
+                                        cont_gps->online=gps_data.online;
+                                        cont_gps->status=(double)gps_data.status;
+					
+                                        cont_gps->sateliteUsed=(double)gps_data.satellites_used;
+					printf("sateliteUsed : %f", (double)gps_data.satellites_used);
+                                        cont_gps->mode=(double)gps_data.fix.mode;
+                                       	cont_gps->time_stamp= gps_data.fix.time;
+                                        cont_gps->latitude=gps_data.fix.latitude;
+                                        cont_gps->longitude=gps_data.fix.longitude;
+                                        cont_gps->altitude=gps_data.fix.altitude;
+                                        cont_gps->speed=gps_data.fix.speed;
+                                        cont_gps->track=gps_data.fix.track;
+                                        cont_gps->pdop=gps_data.dop.pdop;
 					make_true=70;
 					}
 					

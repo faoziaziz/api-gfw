@@ -61,14 +61,13 @@ char * setData();
 void get_data_gps(content_data_gps *cont_gps);
 void read_from_database(content_data_gps *cont_gps);
 /* for implementing */
-
-void accgps(void);
 /* database access */
 
 int db_init();
 void save_to_database(content_data_gps cont_gps);
 void read_from_database(content_data_gps *cont_gps);
-void accgps();
+/* gps acc*/
+void accgps(content_data_gps *cont_gps);
 
 
 #endif

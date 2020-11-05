@@ -4,192 +4,8 @@
   descrip : This code use for user accusition
 */
 #include "client.h"
-//struct content_data_gps cont_gps;
 
 /* client tester */
-void client_tester(){
-  /* this code just for get tester */
-  printf("hai this is for from client_tester.\n");
-  printf("sqlite versinya : %s\n", sqlite3_libversion());
-}
-
-
-/* insert tester */
-int insert_tester(){
-  /* insert tester for test the local database */
-  sqlite3 *db;
-  char *err_msg = 0;
-    
-  int rc = sqlite3_open("test.db", &db);
-    
-  if (rc != SQLITE_OK) {
-        
-    fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-    sqlite3_close(db);
-        
-    return 1;
-  }
-    
-  char *sql = "DROP TABLE IF EXISTS Cars;" 
-    "CREATE TABLE Cars(Id INT, Name TEXT, Price INT);" 
-    "INSERT INTO Cars VALUES(1, 'Audi', 52642);" 
-    "INSERT INTO Cars VALUES(2, 'Mercedes', 57127);" 
-    "INSERT INTO Cars VALUES(3, 'Skoda', 9000);" 
-    "INSERT INTO Cars VALUES(4, 'Volvo', 29000);" 
-    "INSERT INTO Cars VALUES(5, 'Bentley', 350000);" 
-    "INSERT INTO Cars VALUES(6, 'Citroen', 21000);" 
-    "INSERT INTO Cars VALUES(7, 'Hummer', 41400);" 
-    "INSERT INTO Cars VALUES(8, 'Volkswagen', 21600);";
-
-  rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-    
-  if (rc != SQLITE_OK ) {
-        
-    fprintf(stderr, "SQL error: %s\n", err_msg);
-        
-    sqlite3_free(err_msg);        
-    sqlite3_close(db);
-        
-    return 1;
-  } 
-    
-  sqlite3_close(db);
-    
-  return 0;
-   
-
-  
-}
-
-
-/* try check with sqlite3 */
-int sqlite3_tester(){
-  /* this function just check the sqlite in general */
-  sqlite3 *db;
-  sqlite3_stmt *res;
-
-  int rc=sqlite3_open(":memory:", &db);
-  
-  printf("this will start test sqlite\n");
-  if(rc!=SQLITE_OK){
-    fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-    sqlite3_close(db);
-
-    return 1;
-
-  }
-
-  rc = sqlite3_prepare_v2(db, "SELECT SQLITE_VERSION()", -1, &res, 0);
-
-  if(rc==SQLITE_ROW){
-    printf("%s\n", sqlite3_column_text(res, 0));
-  }
-
-  sqlite3_finalize(res);
-  sqlite3_close(db);
-
-  printf("this for end check sqlite\n");
-
-  return 2;
-
-}
-
-/* test parameterized */
-int test_parameterized(){
-
-  /* database */
-  sqlite3 *db;
-  char *err_msg = 0;
-  sqlite3_stmt *res;
-    
-  int rc = sqlite3_open("test.db", &db);
-    
-  if (rc != SQLITE_OK) {
-        
-    fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-    sqlite3_close(db);
-        
-    return 1;
-  }
-    
-  char *sql = "SELECT Id, Name FROM Cars WHERE Id = ?";
-        
-  rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
-    
-  if (rc == SQLITE_OK) {
-        
-    sqlite3_bind_int(res, 1, 3);
-  } else {
-        
-    fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
-  }
-    
-  int step = sqlite3_step(res);
-    
-  if (step == SQLITE_ROW) {
-        
-    printf("%s: ", sqlite3_column_text(res, 0));
-    printf("%s\n", sqlite3_column_text(res, 1));
-        
-  } 
-
-  sqlite3_finalize(res);
-  sqlite3_close(db);
-    
-  return 0;
-}
-
-/* retrevie and callback sqlite. */
-int retreive_sql_tester(){
-  sqlite3 *db;
-  char *err_msg = 0;
-    
-  int rc = sqlite3_open("test.db", &db);
-    
-  if (rc != SQLITE_OK) {
-        
-    fprintf(stderr, "Cannot open database: %s\n", 
-	    sqlite3_errmsg(db));
-    sqlite3_close(db);
-        
-    return 1;
-  }
-    
-  char *sql = "SELECT * FROM Cars";
-        
-  rc = sqlite3_exec(db, sql, callback, 0, &err_msg);
-    
-  if (rc != SQLITE_OK ) {
-        
-    fprintf(stderr, "Failed to select data\n");
-    fprintf(stderr, "SQL error: %s\n", err_msg);
-
-    sqlite3_free(err_msg);
-    sqlite3_close(db);
-        
-    return 1;
-  } 
-    
-  sqlite3_close(db);
-    
-  return 0;
-}
-
-int callback(void *NotUsed, int argc, char **argv, 
-	     char **azColName) {
-    
-  NotUsed = 0;
-    
-  for (int i = 0; i < argc; i++) {
-
-    printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-  }
-    
-  printf("\n");
-    
-  return 0;
-}
-
 /* try push to the server */
 void client_push(content_data_gps cont_gps){
 
@@ -199,7 +15,7 @@ void client_push(content_data_gps cont_gps){
   char *url_complete;
   
   /* Get data from sqlite3 */
-  char * jsonFormat[1000];
+  char * jsonFormat[2000];
   struct json_object *jobj;
   uuid_t uuid;
   char uuid_str[37]; // bagian id diupdate dengan uuid
@@ -230,13 +46,13 @@ void client_push(content_data_gps cont_gps){
   }    
     
   printf("UTC time: %s", asctime(ptm));
-
+  printf("Satelite used : %f\n", cont_gps.sateliteUsed );
+  //cont_gps.sateliteUsed = 1000.0;
   /* set json object */
   jobj=json_object_new_object();
-  /* id */
   json_object_object_add(jobj, "id", json_object_new_string(uuid_str));
-  /* float */
   json_object_object_add(jobj, "online", json_object_new_double(cont_gps.online));
+  json_object_object_add(jobj, "sateliteUsed", json_object_new_double(cont_gps.sateliteUsed));
   json_object_object_add(jobj, "status", json_object_new_double(cont_gps.status));
   json_object_object_add(jobj, "mode", json_object_new_double(cont_gps.mode));
   json_object_object_add(jobj, "time", json_object_new_double(cont_gps.time_stamp));
@@ -246,28 +62,16 @@ void client_push(content_data_gps cont_gps){
   json_object_object_add(jobj, "pdop", json_object_new_double(cont_gps.pdop));
   json_object_object_add(jobj, "longitude", json_object_new_double(cont_gps.longitude));
   json_object_object_add(jobj, "latitude", json_object_new_double(cont_gps.latitude));
+  
   /* string */
   json_object_object_add(jobj, "dateStamp", json_object_new_string(asctime(ptm)));
   json_object_object_add(jobj, "device", json_object_new_string(DEVICE));
   /* float */
-  json_object_object_add(jobj, "sateliteUsed", json_object_new_double(cont_gps.sateliteUsed));
 
-  //strcpy(jsonFormat, json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY)));
 
   
 
   /* just for push to the server */
-#ifdef DEBUG
-  if (DEBUG==1) {
-    printf("Lets, push .... \n");
-    printf("URL api %s .\n", URL_API);
-    printf("Panjang URL : %zu, \n", strlen(URL_API));
-    
-  } else {
-    printf("Debug = %d \n", DEBUG);
-    
-  }
-#endif
 
   /* Headers untuk melakukan akses ke API */
   headers = curl_slist_append(headers, "Accept: application/json");
@@ -281,18 +85,13 @@ void client_push(content_data_gps cont_gps){
   strcpy(url_complete, URL_API);
   strcat(url_complete, loc_post);
 
-#ifdef DEBUG
-  if(DEBUG==1){
-    printf("URL Complete : %s ,\n", url_complete);
-  }
-#endif
   curl_global_init(CURL_GLOBAL_ALL);
   curl = curl_easy_init();
   
   if(curl){
     curl_easy_setopt(curl, CURLOPT_URL, url_complete);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_PRETTY));
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_SPACED|JSON_C_TO_STRING_PRETTY));
     res = curl_easy_perform(curl);
 
     /* Check for errors */
@@ -303,7 +102,7 @@ void client_push(content_data_gps cont_gps){
     curl_easy_cleanup(curl);
   }
 
-  printf("\n");
+ 
   /* release json object */
   json_object_put(jobj); 
   /* lets free */
