@@ -70,6 +70,7 @@ void client_push(content_data_gps cont_gps){
 
 
   
+  printf("JSONNYA adalah : \n%s\n", json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_SPACED|JSON_C_TO_STRING_PRETTY));
 
   /* just for push to the server */
 
@@ -102,7 +103,7 @@ void client_push(content_data_gps cont_gps){
     curl_easy_cleanup(curl);
   }
 
- 
+  printf("Panjang Jsonnya adalah : %d", strlen(json_object_to_json_string_ext(jobj, JSON_C_TO_STRING_SPACED|JSON_C_TO_STRING_PRETTY)));
   /* release json object */
   json_object_put(jobj); 
   /* lets free */

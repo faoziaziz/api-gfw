@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	accgps(&cont_gps);
 	save_to_database(cont_gps);
 	client_push(cont_gps);
-//	read_from_database(&cont_gps);
+	read_from_database(&cont_gps);
 	/* send log error */
 	log_error("errrod\n", __FILE__, __LINE__);
 
