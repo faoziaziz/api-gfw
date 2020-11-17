@@ -58,7 +58,7 @@ void client_push(content_data_gps cont_gps){
   json_object_object_add(jobj, "time", json_object_new_double(cont_gps.time_stamp));
   json_object_object_add(jobj, "altitude", json_object_new_double(cont_gps.altitude));
   json_object_object_add(jobj, "speed", json_object_new_double(cont_gps.speed));
-  json_object_object_add(jobj, "track", json_object_new_double(cont_gps.latitude));
+  json_object_object_add(jobj, "track", json_object_new_double(cont_gps.track));
   json_object_object_add(jobj, "pdop", json_object_new_double(cont_gps.pdop));
   json_object_object_add(jobj, "longitude", json_object_new_double(cont_gps.longitude));
   json_object_object_add(jobj, "latitude", json_object_new_double(cont_gps.latitude));
