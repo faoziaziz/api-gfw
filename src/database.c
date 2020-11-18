@@ -6,6 +6,7 @@
  *	@desc: untuk mengesave data gps ke sqlite3
  *
  * */
+
 void save_to_database(content_data_gps cont_gps){
 	/* ada beberapa hal yang perlu diperhatikan beberapa
 	 * struct gps yang harus di save
@@ -20,7 +21,7 @@ void save_to_database(content_data_gps cont_gps){
 	/* some variable */
 
 	/* open file database */
-	int rc = sqlite3_open("/opt/gfw/gps_client.db", &db);
+	int rc = sqlite3_open(DATABASE_LOC, &db);
 	/* for checking connection */
 	if (rc != SQLITE_OK){
 		fprintf(stderr, "Database tidak bisa dibuka : %s\n", sqlite3_errmsg(db));
@@ -105,55 +106,95 @@ void save_to_database(content_data_gps cont_gps){
 void read_from_database (content_data_gps *cont_gps){
 	sqlite3 *db;
 	char *err_msg=0;
-	sqlite3_stmt *res;
+	sqlite3_stmt *res, *res2;
 
-	int rc =sqlite3_open("/opt/gfw/gps_client.db", &db);
-	printf(" Sqlite go to run.\n");
+	content_data_gps gps_push;
+	int rc =sqlite3_open(DATABASE_LOC, &db);
+
+	printf("baca dari dataabse \n");
 	if (rc!=SQLITE_OK){
 		fprintf(stderr, "Database tidak bisa dibuka %s\n", sqlite3_errmsg(db));
 		log_error("Database tidak bisa dibuka.", __FILE__, __LINE__);
 		sqlite3_close(db);
-		return 1;
-	} 
-
-	
-	char *sql="SELECT * from  GPS_data WHERE flag=0";
-	
-	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
-
-	if (rc==SQLITE_OK){
-		sqlite3_bind_int(res, 1, 3);
+		//		return 1:
 	} else {
-		fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
-		log_error("Statement tidak bisa dieksekusi", __FILE__, __LINE__);
-	}
-	
-	while(sqlite3_step(res)!=SQLITE_DONE){
-		int i;
-		int num_cols = sqlite3_column_count(res);
+		printf("database ok\n");
+		char *sql="SELECT * from  GPS_data WHERE flag=0";
 
-		for (i=0; i<num_cols; i++){
-			switch(sqlite3_column_type(res, i))
-			{
-				case (SQLITE3_TEXT):
-					printf("%s, ", sqlite3_column_text(res, i));
-					break;
-				case (SQLITE_INTEGER):
-					printf("%d, ", sqlite3_column_int(res, i));
-					break;
-				case (SQLITE_FLOAT):
-					printf("%g, ", sqlite3_column_double(res, i));
-					break;
-				defalut:
-					break;
+		//rc = sqlite3_exec(db, sql, callback_update, 0, &err_msg);
+		/*
+		   if (rc!=SQLITE_OK){
+		   fprintf(stderr, "gak bisa eksekusi statment di read dataabse: %s\n", err_msg);
+		   log_error("Statement tidak bisa dieksekusi", __FILE__, __LINE__);
+		   sqlite3_free(err_msg);
+		   sqlite3_close(db);
+		   }
+		   */
+
+		rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
+		if (rc==SQLITE_OK){
+			int step=sqlite3_step(res);
+			if(step==SQLITE_ROW) {
+				int id_nomer;
+				int flag_status;
+				content_data_gps gps_push;
+				char * pointer;
+
+				printf("callab\n");
+
+				id_nomer = sqlite3_column_int(res, 0);
+				gps_push.online=sqlite3_column_double(res, 1);
+				gps_push.status=sqlite3_column_double(res, 2);
+				gps_push.sateliteUsed=sqlite3_column_double(res, 3);
+				gps_push.mode=sqlite3_column_double(res, 4);
+				gps_push.time_stamp=sqlite3_column_double(res, 5);
+				gps_push.latitude=sqlite3_column_double(res, 6);
+				gps_push.longitude=sqlite3_column_double(res, 7);
+				gps_push.altitude=sqlite3_column_double(res, 8);
+				gps_push.speed=sqlite3_column_double(res, 9);
+				gps_push.track=sqlite3_column_double(res, 10);
+				gps_push.pdop=sqlite3_column_double(res, 11);
+				flag_status=sqlite3_column_int(res, 12);
+
+				/* push to server */
+				client_push(gps_push);
+
+				/* update flag */
+				char *sql_flag="UPDATE GPS_Data SET flag=1 where Id=@id";
+				int rc2 = sqlite3_prepare_v2(db, sql_flag, -1, &res2, 0);
+
+				if (rc2!=SQLITE_OK){
+				printf("notok\n");
+				log_error("notoke sqlite flag", __FILE__, __LINE__);
+				
+
+				} else {
+
+					printf("OK\n");
+					int id_ID = sqlite3_bind_parameter_index(res2, "@id");
+					sqlite3_bind_int(res2, id_ID, id_nomer);
+					printf("saved. Harusnya, id nomer :%d \n", id_nomer);
+
+					sqlite3_step(res2);
+					sqlite3_finalize(res2);
+				
+				}
+
+
+
+			} else {
+				printf("Database kosong\n");
+				
 			}
-		}
-	
-		printf("\n %g \n contol", sqlite3_column_double(res, 5));
-	
-	}	
+			sqlite3_finalize(res);
 
-	sqlite3_finalize(res);
+		} else {
+			printf("gal pl\n");
+		}
+
+	}
+
+
 	sqlite3_close(db);
 }
 
@@ -170,7 +211,7 @@ int db_init(){
 
 	/* x adalah nilai balikan untuk mengeinformasikan status*/
 	int x=0; 
-	int rc = sqlite3_open("/opt/gfw/gps_client.db", &db);
+	int rc = sqlite3_open(DATABASE_LOC, &db);
 
 	if(rc != SQLITE_OK ){
 		/* check apakah database bisa dibukak */
@@ -182,7 +223,7 @@ int db_init(){
 
 	char *sql="CREATE TABLE IF NOT EXISTS GPS_data"
 		"("
-		"Id INT AUTO_INCREMENT, " 
+		"Id INTEGER PRIMARY KEY AUTOINCREMENT, " 
 		"online FLOAT, "
 		"status FLOAT, "
 		"sateliteUsed FLOAT, "
@@ -201,8 +242,8 @@ int db_init(){
 
 	if(rc!=SQLITE_OK){
 		/* sqlite3 */
-		fprintf(stderr, "SQL eksekusi error : %s\n", err_msg);
-		log_error("Eksekusi sql errror . \n", __FILE__, __LINE__);
+		fprintf(stderr, "Gabisa inisiasi table : %s\n", err_msg);
+		log_error("gakbisa inisiasi table . \n", __FILE__, __LINE__);
 		sqlite3_free(err_msg);
 		sqlite3_close(db);
 		/* exekusi error */
@@ -213,6 +254,40 @@ int db_init(){
 	/* close database */
 	return x;
 }
+/* */
+
+int callback_update(void *NotUsed, int argc, char **argv, char **azColName){
+
+
+	delay(10000);
+	NotUsed=0;
+	int id_nomer;
+	int flag_status;
+	content_data_gps gps_push;
+	char * pointer;
+
+	printf("callab\n");
+
+	id_nomer = atoi(argv[0]);
+	gps_push.online=strtod(argv[1], NULL);
+	gps_push.status=strtod(argv[2], NULL);
+	gps_push.sateliteUsed=strtod(argv[3], NULL);
+	gps_push.mode=strtod(argv[4], NULL);
+	gps_push.time_stamp=strtod(argv[5], NULL);
+	gps_push.latitude=strtod(argv[6], NULL);
+	gps_push.longitude=strtod(argv[7], NULL);
+	gps_push.altitude=strtod(argv[8], NULL);
+	gps_push.speed=strtod(argv[9], NULL);
+	gps_push.track=strtod(argv[10], NULL);
+	gps_push.pdop=strtod(argv[11], NULL);
+	flag_status=atoi(argv[12]);
+
+	/* push to server */
+	client_push(gps_push);
+
+	/* update flag */
+	printf("sebelum update flag localdb id nomer %d : status %d, speed :%f \n", id_nomer, update_flag_localdb(id_nomer), gps_push.speed);
+}
 
 /* This code use to insert gps data to gps db */
 int insert_gps_to_localdb(float longitude, float latitude){
@@ -221,7 +296,7 @@ int insert_gps_to_localdb(float longitude, float latitude){
 	sqlite3 *db;
 	char *err_msg=0;
 	int x = 0;
-	int rc = sqlite3_open("/opt/gfw/gps_client.db", &db);
+	int rc = sqlite3_open(DATABASE_LOC, &db);
 
 	if(rc !=SQLITE_OK){
 		fprintf(stderr, "Tidak bisa membuka database. %s\n",sqlite3_errmsg(db) );
@@ -267,38 +342,52 @@ int update_flag_localdb(int num_id){
 2 : sql tidak bisa dieksekusi
 
 */
-	int x=0;
-	/* variable to buffer database */
-	char *err_msg = 0; // for error message
-	sqlite3 *db;
 
-	int rc = sqlite3_open("/opt/gfw/gps_client.db", &db);
+	/* variable to buffer database */
+	char *err_msg_flag = 0; // for error message
+	sqlite3 *db;
+	sqlite3_stmt *res;
+
+	int rc = sqlite3_open(DATABASE_LOC, &db);
 
 
 	if(rc!=SQLITE_OK){
-		fprintf(stderr, "tidak bisa membuka database. %s\n", sqlite3_errmsg(db));
+		fprintf(stderr, "tidak bisa membuka databasei update. %s\n", sqlite3_errmsg(db));
+
 		sqlite3_close(db);
-		x+=1;
+
 	}
 
 	/* prepare update flag in table */  
-	char *sql="UPDATE flag in table if id = id";
+	char *sql="UPDATE GPS_data SET flag = 1 WHERE Id = @id";
 
-	rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+	rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
 
 	if(rc!=SQLITE_OK){
-		fprintf(stderr, "tidak bisa mengekseskusi query \n");
-		sqlite3_free(err_msg);
-		x+=1;
+		fprintf(stderr, "tidak bisa mengupdate flag\n");
+		log_error("tidak bsia mengupdate flag.", __FILE__, __LINE__);
+//		sqlite3_free(err_msg);
 	} else {
 		fprintf(stdout, "Status flag updated.\n");
 
+		printf("update index ke %d \n", num_id);
+
+		int id_Id = sqlite3_bind_parameter_index(res, "@id");
+
+		sqlite3_bind_int(res, id_Id, num_id);
+
+		printf("sumpah keeksekusi\n");
+
+
 	}
 
-	int last_id = sqlite3_last_insert_rowid(db);
-	printf("Index terakhir yang diupdate %d\n", last_id);
+
+	sqlite3_step(res);
+	printf("benarkah keeksekusi\n");
+	sqlite3_finalize(res);
 	sqlite3_close(db);
 
-
+	printf("keeksuekrere\n");
+	int x =1;
 	return x;
 }

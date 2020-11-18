@@ -112,3 +112,12 @@ void client_push(content_data_gps cont_gps){
   curl_global_cleanup();
   uuid_clear(uuid);
 }
+
+int check_status_server(){
+
+	/*deklarasi variable */
+	char status_url[]="/status";
+	int url_length;
+	char *url_complete;
+
+}

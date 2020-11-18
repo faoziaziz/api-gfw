@@ -7,7 +7,7 @@
 #define URL_API "http://server.faozi.tech:8083/api-gfw/v1"
   
 #define DEVICE "DRAGON001"
-
+#define DATABASE_LOC "/opt/gfw/gfw_data_gps.db"
 
 #endif
 
