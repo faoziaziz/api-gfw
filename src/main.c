@@ -56,8 +56,8 @@ void *save_to_lokal(void *ptr_local){
 		/* delay 10 menit = 600.000 milisecond */
 		delay(1000);
 		/* access the function */
-		//accgps(&cont_gps_1);
-		get_data_gps(&cont_gps_1);
+		accgps(&cont_gps_1);
+		//get_data_gps(&cont_gps_1);
 		save_to_database(cont_gps_1);
 	
 		/* save to sqlite */
