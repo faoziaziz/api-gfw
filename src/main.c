@@ -54,7 +54,7 @@ void *save_to_lokal(void *ptr_local){
 
 //		printf("Lokal konter : \n");
 		/* delay 10 menit = 600.000 milisecond */
-		delay(1000);
+		delay(DELAY_SAVELOCAL);
 		/* access the function */
 		accgps(&cont_gps_1);
 		//get_data_gps(&cont_gps_1);
@@ -93,7 +93,7 @@ void *save_to_server(void *ptr_server){
 		
 		}
 
-		delay(1000);
+		delay(DELAY_TO_PUSH);
 
 
   }
