@@ -58,6 +58,11 @@ make && sudo make install
 sudo gpsdctl add pds://any
 gpsmon
 ```
+## Install Ngrok
+```bash
+wget https://raw.githubusercontent.com/faoziaziz/api-gfw/v0.0.3/install_ngrok.sh
+sh install_ngrok.sh 
+```
 ### Referensi 
 1. [gps](https://stackoverflow.com/questions/32000328/libgps-c-code-example)
 2. [sqlitec](http://zetcode.com/db/sqlitec/)
