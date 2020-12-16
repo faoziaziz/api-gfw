@@ -61,7 +61,8 @@ gpsmon
 ## Install Ngrok
 ```bash
 wget https://raw.githubusercontent.com/faoziaziz/api-gfw/v0.0.3/install_ngrok.sh
-sh install_ngrok.sh 
+chmod +x install.sh
+sudo ./install.sh <your_authtoken>
 ```
 ### Referensi 
 1. [gps](https://stackoverflow.com/questions/32000328/libgps-c-code-example)
