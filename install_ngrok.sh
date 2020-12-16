@@ -36,9 +36,8 @@ sed -i "s/<add_your_token_here>/$1/g" /opt/ngrok/ngrok.yml
 
 cd /opt/ngrok
 wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm64.tgz
-unzip ngrok-stable-linux-amd64.zip
-rm ngrok-stable-linux-amd64.zip
-chmod +x ngrok
-
+tar -xvzf  ngrok-stable-linux-arm64.tgz
+rm ngrok-stable-linux-arm64.tgz
+chmod +x ngrok && echo "Mantap jivaaa aaa "
 systemctl enable ngrok.service
 systemctl start ngrok.service
