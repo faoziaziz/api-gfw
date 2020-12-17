@@ -30,17 +30,17 @@ void accgps(content_data_gps *cont_gps)
                 /* Put this in a loop with a call to a high resolution sleep () in it. */
                 if (gps_waiting(&gps_data, 500)) {
                         errno = 0;
-                        if (gps_read(&gps_data) == -1) {
+                        if (gps_read(&gps_data, NULL, 0) == -1) {
                                 printf("Read error\n");
                                 exit(1);
                         } else {
                                 if (gps_data.set) { 
-					if( gps_data.online==gps_data.online
+					if( gps_data.online.tv_nsec==gps_data.online.tv_nsec
 							&&gps_data.status==gps_data.status
 							&&gps_data.satellites_used==gps_data.satellites_used
 							&&gps_data.satellites_used>=3
 							&&gps_data.fix.mode==gps_data.fix.mode
-							&&gps_data.fix.time==gps_data.fix.time
+							&&gps_data.fix.time.tv_nsec==gps_data.fix.time.tv_nsec
 							&&gps_data.fix.latitude==gps_data.fix.latitude
 							&&gps_data.fix.longitude==gps_data.fix.longitude
 							&&gps_data.fix.altitude==gps_data.fix.altitude
@@ -48,13 +48,13 @@ void accgps(content_data_gps *cont_gps)
 							&&gps_data.fix.track==gps_data.fix.track
 							&&gps_data.dop.pdop==gps_data.dop.pdop){
                                         
-                                        cont_gps->online=gps_data.online;
+                                        cont_gps->online=gps_data.online.tv_nsec;
                                         cont_gps->status=(double)gps_data.status;
 					
                                         cont_gps->sateliteUsed=(double)gps_data.satellites_used;
 					printf("sateliteUsed : %f", (double)gps_data.satellites_used);
                                         cont_gps->mode=(double)gps_data.fix.mode;
-                                       	cont_gps->time_stamp= gps_data.fix.time;
+                                       	cont_gps->time_stamp= gps_data.fix.time.tv_nsec;
                                         cont_gps->latitude=gps_data.fix.latitude;
                                         cont_gps->longitude=gps_data.fix.longitude;
                                         cont_gps->altitude=gps_data.fix.altitude;
