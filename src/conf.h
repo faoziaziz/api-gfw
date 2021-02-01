@@ -4,9 +4,9 @@
 /* this debug setting */
 #define DEBUG 1
 /* url api configuration*/
-#define URL_API "http://server.faozi.tech:8083/api-gfw/v1"
+#define URL_API "http://labseni.com:8083/api-gfw/v1"
   
-#define DEVICE "DRAGON001"
+#define DEVICE "ALEXSIDRAGON"
 #define DATABASE_LOC "/opt/gfw/gfw_data_gps.db"
 /* DELAY save to local 10 menit = 600000 milisecond. */
 #define DELAY_SAVELOCAL 600000 
