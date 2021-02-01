@@ -108,7 +108,7 @@ void client_push(content_data_gps cont_gps){
   json_object_put(jobj); 
   /* lets free */
   free(url_complete);
-	free(jobj);
+	//free(jobj);
   // release memory for url completed
   curl_global_cleanup();
   uuid_clear(uuid);
