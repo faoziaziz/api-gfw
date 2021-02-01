@@ -130,7 +130,7 @@ int check_ready(){
   curl = curl_easy_init();
 
   if(curl){
-	  curl_easy_setopt(curl, CURLOPT_URL, "http://server.faozi.tech:8083/api-gfw/v1/status");
+	  curl_easy_setopt(curl, CURLOPT_URL, "http://labseni.com:8083/api-gfw/v1/status");
 	  curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
 	  res = curl_easy_perform(curl);
